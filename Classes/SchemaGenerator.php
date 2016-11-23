@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Utility;
+namespace Neos\Utility;
 
 /*
  * This file is part of the Neos.Utility.Schema package.
@@ -17,7 +17,7 @@ namespace TYPO3\Flow\Utility;
  * The implementation is still simple and intends to be a kickstart for
  * writing schemas. In future this can be extended.
  *
- * See \TYPO3\Flow\Utility\SchemaValidator for a description of all features
+ * See \Neos\Utility\SchemaValidator for a description of all features
  * of the SchemaValidator
  */
 class SchemaGenerator
