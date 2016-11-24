@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Utility;
+namespace Neos\Utility;
 
 /*
  * This file is part of the Neos.Utility.Schema package.
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Utility;
  * source code.
  */
 
-use TYPO3\Flow\Error\Error;
-use TYPO3\Flow\Error\Result as ErrorResult;
+use Neos\Error\Messages\Error;
+use Neos\Error\Messages\Result as ErrorResult;
 
 /**
  * A general purpose Array Validator which can check PHP arrays for validity
