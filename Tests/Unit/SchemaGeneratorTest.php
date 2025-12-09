@@ -31,7 +31,7 @@ class SchemaGeneratorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function schemaGenerationForSimpleTypesDataProvider()
+    public static function schemaGenerationForSimpleTypesDataProvider()
     {
         return [
             ['string', ['type' => 'string']],
@@ -56,7 +56,7 @@ class SchemaGeneratorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function schemaGenerationForArrayOfTypesDataProvider()
+    public static function schemaGenerationForArrayOfTypesDataProvider()
     {
         return [
             [['string'], ['type' => 'array', 'items' => ['type' => 'string']]],
