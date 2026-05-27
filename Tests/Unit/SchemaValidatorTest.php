@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Utility;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Error\Messages as Error;
 /**
  * Testcase for the configuration validator
  */
-class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
+final class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var SchemaValidator
@@ -62,19 +65,17 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesRequiredPropertyDataProvider(): array
+    public static function validateHandlesRequiredPropertyDataProvider(): \Iterator
     {
-        return [
-            [['foo' => 'a string'], true],
-            [['foo' => 'a string', 'bar' => 'a string'], true],
-            [['foo' => 'a string', 'bar' => 123], false],
-            [['foo' => 'a string', 'bar' => 'a string'], true],
-            [['foo' => 123, 'bar' => 'a string'], false],
-            [['foo' => null, 'bar' => 'a string'], false],
-            [['bar' => 'string'], false]
-        ];
+        yield [['foo' => 'a string'], true];
+        yield [['foo' => 'a string', 'bar' => 'a string'], true];
+        yield [['foo' => 'a string', 'bar' => 123], false];
+        yield [['foo' => 'a string', 'bar' => 'a string'], true];
+        yield [['foo' => 123, 'bar' => 'a string'], false];
+        yield [['foo' => null, 'bar' => 'a string'], false];
+        yield [['bar' => 'string'], false];
     }
 
     /**
@@ -97,15 +98,13 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesDisallowPropertyDataProvider(): array
+    public static function validateHandlesDisallowPropertyDataProvider(): \Iterator
     {
-        return [
-            ['string', true],
-            [123, false],
-            [[1,2,3], false]
-        ];
+        yield ['string', true];
+        yield [123, false];
+        yield [[1,2,3], false];
     }
 
     /**
@@ -121,17 +120,15 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesEnumPropertyDataProvider(): array
+    public static function validateHandlesEnumPropertyDataProvider(): \Iterator
     {
-        return [
-            [1, true],
-            [2, true],
-            [null, false],
-            [4, false],
-            [[1,2,3], false]
-        ];
+        yield [1, true];
+        yield [2, true];
+        yield [null, false];
+        yield [4, false];
+        yield [[1,2,3], false];
     }
 
     /**
@@ -180,26 +177,24 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertError($result);
 
         $allErrors = $result->getFlattenedErrors();
-        self::assertTrue(array_key_exists('foo.bar.baz', $allErrors));
+        self::assertArrayHasKey('foo.bar.baz', $allErrors);
 
         $pathErrors = $result->forProperty('foo.bar.baz')->getErrors();
         $firstPathError = $pathErrors[0];
-        self::assertEquals($firstPathError->getCode(), 1328557141);
+        self::assertEquals(1328557141, $firstPathError->getCode());
         self::assertEquals($firstPathError->getArguments(), ['type=number', 'type=string']);
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesMultipleTypesDataProvider(): array
+    public static function validateHandlesMultipleTypesDataProvider(): \Iterator
     {
-        return [
-            [['property' => 'value'], true],
-            ['value', true],
-            [false, false],
-            [123, false],
-            [[1,2,3], false]
-        ];
+        yield [['property' => 'value'], true];
+        yield ['value', true];
+        yield [false, false];
+        yield [123, false];
+        yield [[1,2,3], false];
     }
 
     /**
@@ -246,19 +241,16 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /// INTEGER ///
-
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesIntegerTypePropertyDataProvider(): array
+    public static function validateHandlesIntegerTypePropertyDataProvider(): \Iterator
     {
-        return [
-            [23, true],
-            ['foo', false],
-            [23.42, false],
-            [[], false],
-            [null, false],
-        ];
+        yield [23, true];
+        yield ['foo', false];
+        yield [23.42, false];
+        yield [[], false];
+        yield [null, false];
     }
 
     /**
@@ -274,18 +266,15 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /// NUMBER ///
-
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesNumberTypePropertyDataProvider(): array
+    public static function validateHandlesNumberTypePropertyDataProvider(): \Iterator
     {
-        return [
-            [23.42, true],
-            [42, true],
-            ['foo', false],
-            [null, false]
-        ];
+        yield [23.42, true];
+        yield [42, true];
+        yield ['foo', false];
+        yield [null, false];
     }
 
     /**
@@ -301,17 +290,15 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesNumberTypePropertyWithMinimumAndMaximumConstraintDataProvider(): array
+    public static function validateHandlesNumberTypePropertyWithMinimumAndMaximumConstraintDataProvider(): \Iterator
     {
-        return [
-            [33, true],
-            [99, false],
-            [1, false],
-            [23, true],
-            [42, true]
-        ];
+        yield [33, true];
+        yield [99, false];
+        yield [1, false];
+        yield [23, true];
+        yield [42, true];
     }
 
     /**
@@ -345,18 +332,16 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesNumberTypePropertyWithExclusiveMinimumAndMaximumConstraintDataProvider(): array
+    public static function validateHandlesNumberTypePropertyWithExclusiveMinimumAndMaximumConstraintDataProvider(): \Iterator
     {
-        return [
-            [10, false],
-            [22, false],
-            [23, true],
-            [42, true],
-            [43, false],
-            [99, false]
-        ];
+        yield [10, false];
+        yield [22, false];
+        yield [23, true];
+        yield [42, true];
+        yield [43, false];
+        yield [99, false];
     }
 
     /**
@@ -376,17 +361,15 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesNumberTypePropertyWithDivisibleByConstraintDataProvider(): array
+    public static function validateHandlesNumberTypePropertyWithDivisibleByConstraintDataProvider(): \Iterator
     {
-        return [
-            [4, true],
-            [3, false],
-            [-3, false],
-            [-4, true],
-            [0, true],
-        ];
+        yield [4, true];
+        yield [3, false];
+        yield [-3, false];
+        yield [-4, true];
+        yield [0, true];
     }
 
     /**
@@ -403,16 +386,13 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /// STRING ///
-
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesStringTypePropertyDataProvider(): array
+    public static function validateHandlesStringTypePropertyDataProvider(): \Iterator
     {
-        return [
-            ['FooBar', true],
-            [123, false]
-        ];
+        yield ['FooBar', true];
+        yield [123, false];
     }
 
     /**
@@ -428,15 +408,13 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesStringTypePropertyWithPatternConstraintDataProvider(): array
+    public static function validateHandlesStringTypePropertyWithPatternConstraintDataProvider(): \Iterator
     {
-        return [
-            ['12a', true],
-            ['1236', false],
-            ['12c', false]
-        ];
+        yield ['12a', true];
+        yield ['1236', false];
+        yield ['12c', false];
     }
 
     /**
@@ -453,17 +431,15 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesStringTypePropertyWithDateTimeConstraintDataProvider(): array
+    public static function validateHandlesStringTypePropertyWithDateTimeConstraintDataProvider(): \Iterator
     {
-        return [
-            ['01:25:00', false],
-            ['1976-04-18', false],
-            ['1976-04-18T01:25:00+00:00', true],
-            ['foobar', false],
-            [123, false]
-        ];
+        yield ['01:25:00', false];
+        yield ['1976-04-18', false];
+        yield ['1976-04-18T01:25:00+00:00', true];
+        yield ['foobar', false];
+        yield [123, false];
     }
 
     /**
@@ -480,17 +456,15 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesStringTypePropertyWithFormatDateConstraintDataProvider(): array
+    public static function validateHandlesStringTypePropertyWithFormatDateConstraintDataProvider(): \Iterator
     {
-        return [
-            ['01:25:00', false],
-            ['1976-04-18', true],
-            ['1976-04-18T01:25:00+00:00', false],
-            ['foobar', false],
-            [123, false]
-        ];
+        yield ['01:25:00', false];
+        yield ['1976-04-18', true];
+        yield ['1976-04-18T01:25:00+00:00', false];
+        yield ['foobar', false];
+        yield [123, false];
     }
 
     /**
@@ -507,17 +481,15 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesStringTypePropertyWithFormatTimeConstraintDataProvider(): array
+    public static function validateHandlesStringTypePropertyWithFormatTimeConstraintDataProvider(): \Iterator
     {
-        return [
-            ['01:25:00', true],
-            ['1976-04-18', false],
-            ['1976-04-18T01:25:00+00:00', false],
-            ['foobar', false],
-            [123, false]
-        ];
+        yield ['01:25:00', true];
+        yield ['1976-04-18', false];
+        yield ['1976-04-18T01:25:00+00:00', false];
+        yield ['foobar', false];
+        yield [123, false];
     }
 
     /**
@@ -534,16 +506,14 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesStringTypePropertyWithFormatUriPConstraintDataProvider(): array
+    public static function validateHandlesStringTypePropertyWithFormatUriPConstraintDataProvider(): \Iterator
     {
-        return [
-            ['http://foo.bar.de', true],
-            ['ftp://dasdas.de/foo/bar/?asds=123&dasdasd#dasdas', true],
-            ['foo', false],
-            [123, false],
-        ];
+        yield ['http://foo.bar.de', true];
+        yield ['ftp://dasdas.de/foo/bar/?asds=123&dasdasd#dasdas', true];
+        yield ['foo', false];
+        yield [123, false];
     }
 
     /**
@@ -560,16 +530,14 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesStringTypePropertyWithFormatHostnameConstraintDataProvider(): array
+    public static function validateHandlesStringTypePropertyWithFormatHostnameConstraintDataProvider(): \Iterator
     {
-        return [
-            ['www.neos.io', true],
-            ['this.is.an.invalid.hostname', false],
-            ['foobar', false],
-            [123, false]
-        ];
+        yield ['www.neos.io', true];
+        yield ['this.is.an.invalid.hostname', false];
+        yield ['foobar', false];
+        yield [123, false];
     }
 
     /**
@@ -586,16 +554,14 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesStringTypePropertyWithFormatIpv4ConstraintDataProvider(): array
+    public static function validateHandlesStringTypePropertyWithFormatIpv4ConstraintDataProvider(): \Iterator
     {
-        return [
-            ['2001:0db8:85a3:08d3:1319:8a2e:0370:7344', false],
-            ['123.132.123.132', true],
-            ['foobar', false],
-            [123, false]
-        ];
+        yield ['2001:0db8:85a3:08d3:1319:8a2e:0370:7344', false];
+        yield ['123.132.123.132', true];
+        yield ['foobar', false];
+        yield [123, false];
     }
 
     /**
@@ -612,16 +578,14 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesStringTypePropertyWithFormatIpv6ConstraintDataProvider(): array
+    public static function validateHandlesStringTypePropertyWithFormatIpv6ConstraintDataProvider(): \Iterator
     {
-        return [
-            ['2001:0db8:85a3:08d3:1319:8a2e:0370:7344', true],
-            ['123.132.123.132', false],
-            ['foobar', false],
-            [123, false]
-        ];
+        yield ['2001:0db8:85a3:08d3:1319:8a2e:0370:7344', true];
+        yield ['123.132.123.132', false];
+        yield ['foobar', false];
+        yield [123, false];
     }
 
     /**
@@ -638,17 +602,15 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesStringTypePropertyWithFormatIpAddressConstraintDataProvider(): array
+    public static function validateHandlesStringTypePropertyWithFormatIpAddressConstraintDataProvider(): \Iterator
     {
-        return [
-            ['2001:0db8:85a3:08d3:1319:8a2e:0370:7344', true],
-            ['123.132.123.132', true],
-            ['foobar', false],
-            ['ab1', false],
-            [123, false]
-        ];
+        yield ['2001:0db8:85a3:08d3:1319:8a2e:0370:7344', true];
+        yield ['123.132.123.132', true];
+        yield ['foobar', false];
+        yield ['ab1', false];
+        yield [123, false];
     }
 
     /**
@@ -665,19 +627,17 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesStringTypePropertyWithFormatClassNameConstraintDataProvider(): array
+    public static function validateHandlesStringTypePropertyWithFormatClassNameConstraintDataProvider(): \Iterator
     {
-        return [
-            [SchemaValidator::class, true],
-            ['Neos\Flow\UnknownClass', false],
-            ['foobar', false],
-            ['foo bar', false],
-            ['foo/bar', false],
-            ['flow/welcome', false],
-            [123, false]
-        ];
+        yield [SchemaValidator::class, true];
+        yield ['Neos\Flow\UnknownClass', false];
+        yield ['foobar', false];
+        yield ['foo bar', false];
+        yield ['foo/bar', false];
+        yield ['flow/welcome', false];
+        yield [123, false];
     }
 
     /**
@@ -694,19 +654,17 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesStringTypePropertyWithFormatInterfaceNameConstraintDataProvider(): array
+    public static function validateHandlesStringTypePropertyWithFormatInterfaceNameConstraintDataProvider(): \Iterator
     {
-        return [
-            [\Iterator::class, true],
-            ['\Neos\Flow\UnknownClass', false],
-            ['foobar', false],
-            ['foo bar', false],
-            ['foo/bar', false],
-            ['flow/welcome', false],
-            [123, false]
-        ];
+        yield [\Iterator::class, true];
+        yield ['\Neos\Flow\UnknownClass', false];
+        yield ['foobar', false];
+        yield ['foo bar', false];
+        yield ['foo/bar', false];
+        yield ['flow/welcome', false];
+        yield [123, false];
     }
 
     /**
@@ -723,15 +681,13 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesStringTypePropertyWithMinLengthConstraintDataProvider(): array
+    public static function validateHandlesStringTypePropertyWithMinLengthConstraintDataProvider(): \Iterator
     {
-        return [
-            ['12356', true],
-            ['1235', true],
-            ['123', false],
-        ];
+        yield ['12356', true];
+        yield ['1235', true];
+        yield ['123', false];
     }
 
     /**
@@ -748,15 +704,13 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesStringTypePropertyWithMaxLengthConstraintDataProvider(): array
+    public static function validateHandlesStringTypePropertyWithMaxLengthConstraintDataProvider(): \Iterator
     {
-        return [
-            ['123', true],
-            ['1234', true],
-            ['12345', false]
-        ];
+        yield ['123', true];
+        yield ['1234', true];
+        yield ['12345', false];
     }
 
     /**
@@ -774,20 +728,17 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
 
 
     /// BOOLEAN ///
-
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesBooleanTypeDataProvider(): array
+    public static function validateHandlesBooleanTypeDataProvider(): \Iterator
     {
-        return [
-            [true, true],
-            [false, true],
-            ['foo', false],
-            [123, false],
-            [12.34, false],
-            [[1,2,3], false]
-        ];
+        yield [true, true];
+        yield [false, true];
+        yield ['foo', false];
+        yield [123, false];
+        yield [12.34, false];
+        yield [[1,2,3], false];
     }
 
     /**
@@ -803,17 +754,14 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /// ARRAY ///
-
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesArrayTypePropertyDataProvider(): array
+    public static function validateHandlesArrayTypePropertyDataProvider(): \Iterator
     {
-        return [
-            [[1, 2, 3], true],
-            ['foo', false],
-            [['foo' => 'bar'], false]
-        ];
+        yield [[1, 2, 3], true];
+        yield ['foo', false];
+        yield [['foo' => 'bar'], false];
     }
 
     /**
@@ -829,14 +777,12 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesArrayTypePropertyWithItemsConstraintDataProvider(): array
+    public static function validateHandlesArrayTypePropertyWithItemsConstraintDataProvider(): \Iterator
     {
-        return [
-            [[1, 2, 3], true],
-            [[1, 2, 'test string'], false]
-        ];
+        yield [[1, 2, 3], true];
+        yield [[1, 2, 'test string'], false];
     }
 
     /**
@@ -853,14 +799,12 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesArrayTypePropertyWithItemsSchemaConstraintDataProvider(): array
+    public static function validateHandlesArrayTypePropertyWithItemsSchemaConstraintDataProvider(): \Iterator
     {
-        return [
-            [[1, 2, 3], true],
-            [[1, 2, 'test string'], false]
-        ];
+        yield [[1, 2, 3], true];
+        yield [[1, 2, 'test string'], false];
     }
 
     /**
@@ -879,14 +823,12 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesArrayTypePropertyWithItemsArrayConstraintDataProvider(): array
+    public static function validateHandlesArrayTypePropertyWithItemsArrayConstraintDataProvider(): \Iterator
     {
-        return [
-            [[1, 2, 'test string'], true],
-            [[1, 2, 'test string', 1.56], false]
-        ];
+        yield [[1, 2, 'test string'], true];
+        yield [[1, 2, 'test string', 1.56], false];
     }
 
     /**
@@ -906,16 +848,14 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesArrayUniqueItemsConstraintDataProvider(): array
+    public static function validateHandlesArrayUniqueItemsConstraintDataProvider(): \Iterator
     {
-        return [
-            [[1,2,3], true],
-            [[1,2,1], false],
-            [[[1,2], [1,3]], true],
-            [[[1,2], [1,3], [1,2]], false],
-        ];
+        yield [[1,2,3], true];
+        yield [[1,2,1], false];
+        yield [[[1,2], [1,3]], true];
+        yield [[[1,2], [1,3], [1,2]], false];
     }
 
     /**
@@ -932,16 +872,13 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /// DICTIONARY ///
-
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesDictionaryTypeDataProvider(): array
+    public static function validateHandlesDictionaryTypeDataProvider(): \Iterator
     {
-        return [
-            [['A' => 1, 'B' => 2, 'C' => 3], true],
-            [[1, 2, 3], false]
-        ];
+        yield [['A' => 1, 'B' => 2, 'C' => 3], true];
+        yield [[1, 2, 3], false];
     }
 
     /**
@@ -957,15 +894,13 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesDictionaryTypeWithPropertiesConstraintDataProvider(): array
+    public static function validateHandlesDictionaryTypeWithPropertiesConstraintDataProvider(): \Iterator
     {
-        return [
-            [['foo' => 123, 'bar' => 'baz'], true],
-            [['foo' => 'baz', 'bar' => 'baz'], false],
-            [['foo' => 123, 'bar' => 123], false]
-        ];
+        yield [['foo' => 123, 'bar' => 'baz'], true];
+        yield [['foo' => 'baz', 'bar' => 'baz'], false];
+        yield [['foo' => 123, 'bar' => 123], false];
     }
 
     /**
@@ -985,16 +920,14 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesDictionaryTypeWithPatternPropertiesConstraintDataProvider(): array
+    public static function validateHandlesDictionaryTypeWithPatternPropertiesConstraintDataProvider(): \Iterator
     {
-        return [
-            [['ab1' => 'string'], true],
-            [['bbb' => 123], false],
-            [['ab' => 123], false],
-            [['ad12' => 'string'], false],
-        ];
+        yield [['ab1' => 'string'], true];
+        yield [['bbb' => 123], false];
+        yield [['ab' => 123], false];
+        yield [['ad12' => 'string'], false];
     }
 
     /**
@@ -1014,15 +947,13 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesDictionaryTypeWithFormatPropertiesConstraintDataProvider(): array
+    public static function validateHandlesDictionaryTypeWithFormatPropertiesConstraintDataProvider(): \Iterator
     {
-        return [
-            [['127.0.0.1' => 'string'], true],
-            [['string' => 123], false],
-            [['127.0.0.1' => 123], false],
-        ];
+        yield [['127.0.0.1' => 'string'], true];
+        yield [['string' => 123], false];
+        yield [['127.0.0.1' => 123], false];
     }
 
     /**
@@ -1042,15 +973,13 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesDictionaryTypeWithAdditionalPropertyFalseConstraintDataProvider(): array
+    public static function validateHandlesDictionaryTypeWithAdditionalPropertyFalseConstraintDataProvider(): \Iterator
     {
-        return [
-            [['empty' => null], true],
-            [['foo' => 123, 'bar' => 'baz'], true],
-            [['foo' => 123, 'bar' => 'baz', 'baz' => 'blah'], false]
-        ];
+        yield [['empty' => null], true];
+        yield [['foo' => 123, 'bar' => 'baz'], true];
+        yield [['foo' => 123, 'bar' => 'baz', 'baz' => 'blah'], false];
     }
 
     /**
@@ -1072,15 +1001,13 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesDictionaryTypeWithAdditionalPropertySchemaConstraintDataProvider(): array
+    public static function validateHandlesDictionaryTypeWithAdditionalPropertySchemaConstraintDataProvider(): \Iterator
     {
-        return [
-            [['foo' => 123, 'bar' => 'baz'], true],
-            [['foo' => 123, 'bar' => 'baz', 'baz' => 123], true],
-            [['foo' => 123, 'bar' => 123, 'baz' => 'string'], false]
-        ];
+        yield [['foo' => 123, 'bar' => 'baz'], true];
+        yield [['foo' => 123, 'bar' => 'baz', 'baz' => 123], true];
+        yield [['foo' => 123, 'bar' => 123, 'baz' => 'string'], false];
     }
 
     /**
@@ -1117,16 +1044,13 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /// NULL ///
-
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesNullTypeDataProvider(): array
+    public static function validateHandlesNullTypeDataProvider(): \Iterator
     {
-        return [
-            [null, true],
-            [123, false]
-        ];
+        yield [null, true];
+        yield [123, false];
     }
 
     /**
@@ -1142,14 +1066,12 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateHandlesUnknownTypeDataProvider(): array
+    public static function validateHandlesUnknownTypeDataProvider(): \Iterator
     {
-        return [
-            [null, false],
-            [123, false]
-        ];
+        yield [null, false];
+        yield [123, false];
     }
 
     /**
@@ -1166,20 +1088,17 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
 
 
     /// ANY ///
-
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateAnyTypeResultHasNoErrorsInAnyCaseDataProvider(): array
+    public static function validateAnyTypeResultHasNoErrorsInAnyCaseDataProvider(): \Iterator
     {
-        return [
-            [23, true],
-            [23.42, true],
-            ['foo', true],
-            [[1,2,3], true],
-            [['A' => 1, 'B' => 2, 'C' => 3], true],
-            [null, true],
-        ];
+        yield [23, true];
+        yield [23.42, true];
+        yield ['foo', true];
+        yield [[1,2,3], true];
+        yield [['A' => 1, 'B' => 2, 'C' => 3], true];
+        yield [null, true];
     }
 
     /**
@@ -1195,19 +1114,16 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /// CUSTOM ///
-
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateCustomTypeResultDataProvider(): array
+    public static function validateCustomTypeResultDataProvider(): \Iterator
     {
-        return [
-            [ ['property' => ['integer_property' => 1, 'string_property' => 'string' ] ], true ],
-            [ ['property' => ['integer_property' => 'no_integer', 'string_property' => 123 ] ], false ],
-            [ ['property' => 'some_value' ], false ],
-            [ ['other_property' => ['integer_property' => 1, 'string_property' => 'string' ] ], false ],
-            [ ['other_property' => 'some_value' ], false ]
-        ];
+        yield [ ['property' => ['integer_property' => 1, 'string_property' => 'string' ] ], true ];
+        yield [ ['property' => ['integer_property' => 'no_integer', 'string_property' => 123 ] ], false ];
+        yield [ ['property' => 'some_value' ], false ];
+        yield [ ['other_property' => ['integer_property' => 1, 'string_property' => 'string' ] ], false ];
+        yield [ ['other_property' => 'some_value' ], false ];
     }
 
     /**
@@ -1234,17 +1150,15 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateCustomTypeWithSuperTypesDataProvider(): array
+    public static function validateCustomTypeWithSuperTypesDataProvider(): \Iterator
     {
-        return [
-            [ ['property' => ['supertype_property' => 1, 'type_property' => 'string' ] ], true ],
-            [ ['property' => ['supertype_property' => 'no_integer', 'type_property' => 123 ] ], false ],
-            [ ['property' => 'some_value' ], false ],
-            [ ['other_property' => ['supertype_property' => 1, 'type_property' => 'string' ] ], false ],
-            [ ['other_property' => 'some_value' ], false ]
-        ];
+        yield [ ['property' => ['supertype_property' => 1, 'type_property' => 'string' ] ], true ];
+        yield [ ['property' => ['supertype_property' => 'no_integer', 'type_property' => 123 ] ], false ];
+        yield [ ['property' => 'some_value' ], false ];
+        yield [ ['other_property' => ['supertype_property' => 1, 'type_property' => 'string' ] ], false ];
+        yield [ ['other_property' => 'some_value' ], false ];
     }
 
     /**
@@ -1277,18 +1191,15 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validateCustomTypeArrayDataProvider(): array
+    public static function validateCustomTypeArrayDataProvider(): \Iterator
     {
-        return [
-            [ ['property' => ['custom_type_a_property' => 1]], true ],
-            [ ['property' => ['custom_type_b_property' => 'string' ] ], true ],
-            [ ['property' => ['custom_type_a_property' => 1, 'custom_type_b_property' => 'string' ] ], false ],
-
-            [ ['property' => ['custom_type_a_property' => 'no_integer' ] ], false ],
-            [ ['property' => ['custom_type_b_property' => 12324 ] ], false ],
-        ];
+        yield [ ['property' => ['custom_type_a_property' => 1]], true ];
+        yield [ ['property' => ['custom_type_b_property' => 'string' ] ], true ];
+        yield [ ['property' => ['custom_type_a_property' => 1, 'custom_type_b_property' => 'string' ] ], false ];
+        yield [ ['property' => ['custom_type_a_property' => 'no_integer' ] ], false ];
+        yield [ ['property' => ['custom_type_b_property' => 12324 ] ], false ];
     }
 
     /**
