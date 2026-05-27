@@ -36,7 +36,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
      * @param boolean $expectError
      * @return void
      */
-    protected function assertError(Error\Result $result, bool $expectError = true)
+    protected function assertError(Error\Result $result, bool $expectError = true): void
     {
         if ($expectError === true) {
             self::assertTrue($result->hasErrors());
@@ -52,7 +52,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
      * @param boolean $expectSuccess
      * @return void
      */
-    protected function assertSuccess(Error\Result $result, bool $expectSuccess = true)
+    protected function assertSuccess(Error\Result $result, bool $expectSuccess = true): void
     {
         if ($expectSuccess === true) {
             self::assertFalse($result->hasErrors());
@@ -64,7 +64,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesRequiredPropertyDataProvider()
+    public static function validateHandlesRequiredPropertyDataProvider(): array
     {
         return [
             [['foo' => 'a string'], true],
@@ -99,7 +99,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesDisallowPropertyDataProvider()
+    public static function validateHandlesDisallowPropertyDataProvider(): array
     {
         return [
             ['string', true],
@@ -123,7 +123,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesEnumPropertyDataProvider()
+    public static function validateHandlesEnumPropertyDataProvider(): array
     {
         return [
             [1, true],
@@ -191,7 +191,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesMultipleTypesDataProvider()
+    public static function validateHandlesMultipleTypesDataProvider(): array
     {
         return [
             [['property' => 'value'], true],
@@ -250,7 +250,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesIntegerTypePropertyDataProvider()
+    public static function validateHandlesIntegerTypePropertyDataProvider(): array
     {
         return [
             [23, true],
@@ -278,7 +278,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesNumberTypePropertyDataProvider()
+    public static function validateHandlesNumberTypePropertyDataProvider(): array
     {
         return [
             [23.42, true],
@@ -303,7 +303,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesNumberTypePropertyWithMinimumAndMaximumConstraintDataProvider()
+    public static function validateHandlesNumberTypePropertyWithMinimumAndMaximumConstraintDataProvider(): array
     {
         return [
             [33, true],
@@ -347,7 +347,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesNumberTypePropertyWithExclusiveMinimumAndMaximumConstraintDataProvider()
+    public static function validateHandlesNumberTypePropertyWithExclusiveMinimumAndMaximumConstraintDataProvider(): array
     {
         return [
             [10, false],
@@ -378,7 +378,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesNumberTypePropertyWithDivisibleByConstraintDataProvider()
+    public static function validateHandlesNumberTypePropertyWithDivisibleByConstraintDataProvider(): array
     {
         return [
             [4, true],
@@ -407,7 +407,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesStringTypePropertyDataProvider()
+    public static function validateHandlesStringTypePropertyDataProvider(): array
     {
         return [
             ['FooBar', true],
@@ -430,7 +430,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesStringTypePropertyWithPatternConstraintDataProvider()
+    public static function validateHandlesStringTypePropertyWithPatternConstraintDataProvider(): array
     {
         return [
             ['12a', true],
@@ -455,7 +455,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesStringTypePropertyWithDateTimeConstraintDataProvider()
+    public static function validateHandlesStringTypePropertyWithDateTimeConstraintDataProvider(): array
     {
         return [
             ['01:25:00', false],
@@ -482,7 +482,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesStringTypePropertyWithFormatDateConstraintDataProvider()
+    public static function validateHandlesStringTypePropertyWithFormatDateConstraintDataProvider(): array
     {
         return [
             ['01:25:00', false],
@@ -509,7 +509,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesStringTypePropertyWithFormatTimeConstraintDataProvider()
+    public static function validateHandlesStringTypePropertyWithFormatTimeConstraintDataProvider(): array
     {
         return [
             ['01:25:00', true],
@@ -536,7 +536,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesStringTypePropertyWithFormatUriPConstraintDataProvider()
+    public static function validateHandlesStringTypePropertyWithFormatUriPConstraintDataProvider(): array
     {
         return [
             ['http://foo.bar.de', true],
@@ -562,7 +562,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesStringTypePropertyWithFormatHostnameConstraintDataProvider()
+    public static function validateHandlesStringTypePropertyWithFormatHostnameConstraintDataProvider(): array
     {
         return [
             ['www.neos.io', true],
@@ -588,7 +588,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesStringTypePropertyWithFormatIpv4ConstraintDataProvider()
+    public static function validateHandlesStringTypePropertyWithFormatIpv4ConstraintDataProvider(): array
     {
         return [
             ['2001:0db8:85a3:08d3:1319:8a2e:0370:7344', false],
@@ -614,7 +614,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesStringTypePropertyWithFormatIpv6ConstraintDataProvider()
+    public static function validateHandlesStringTypePropertyWithFormatIpv6ConstraintDataProvider(): array
     {
         return [
             ['2001:0db8:85a3:08d3:1319:8a2e:0370:7344', true],
@@ -640,7 +640,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesStringTypePropertyWithFormatIpAddressConstraintDataProvider()
+    public static function validateHandlesStringTypePropertyWithFormatIpAddressConstraintDataProvider(): array
     {
         return [
             ['2001:0db8:85a3:08d3:1319:8a2e:0370:7344', true],
@@ -667,7 +667,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesStringTypePropertyWithFormatClassNameConstraintDataProvider()
+    public static function validateHandlesStringTypePropertyWithFormatClassNameConstraintDataProvider(): array
     {
         return [
             [SchemaValidator::class, true],
@@ -696,7 +696,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesStringTypePropertyWithFormatInterfaceNameConstraintDataProvider()
+    public static function validateHandlesStringTypePropertyWithFormatInterfaceNameConstraintDataProvider(): array
     {
         return [
             [\Iterator::class, true],
@@ -725,7 +725,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesStringTypePropertyWithMinLengthConstraintDataProvider()
+    public static function validateHandlesStringTypePropertyWithMinLengthConstraintDataProvider(): array
     {
         return [
             ['12356', true],
@@ -750,7 +750,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesStringTypePropertyWithMaxLengthConstraintDataProvider()
+    public static function validateHandlesStringTypePropertyWithMaxLengthConstraintDataProvider(): array
     {
         return [
             ['123', true],
@@ -778,7 +778,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesBooleanTypeDataProvider()
+    public static function validateHandlesBooleanTypeDataProvider(): array
     {
         return [
             [true, true],
@@ -807,7 +807,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesArrayTypePropertyDataProvider()
+    public static function validateHandlesArrayTypePropertyDataProvider(): array
     {
         return [
             [[1, 2, 3], true],
@@ -831,7 +831,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesArrayTypePropertyWithItemsConstraintDataProvider()
+    public static function validateHandlesArrayTypePropertyWithItemsConstraintDataProvider(): array
     {
         return [
             [[1, 2, 3], true],
@@ -855,7 +855,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesArrayTypePropertyWithItemsSchemaConstraintDataProvider()
+    public static function validateHandlesArrayTypePropertyWithItemsSchemaConstraintDataProvider(): array
     {
         return [
             [[1, 2, 3], true],
@@ -881,7 +881,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesArrayTypePropertyWithItemsArrayConstraintDataProvider()
+    public static function validateHandlesArrayTypePropertyWithItemsArrayConstraintDataProvider(): array
     {
         return [
             [[1, 2, 'test string'], true],
@@ -908,7 +908,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesArrayUniqueItemsConstraintDataProvider()
+    public static function validateHandlesArrayUniqueItemsConstraintDataProvider(): array
     {
         return [
             [[1,2,3], true],
@@ -936,7 +936,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesDictionaryTypeDataProvider()
+    public static function validateHandlesDictionaryTypeDataProvider(): array
     {
         return [
             [['A' => 1, 'B' => 2, 'C' => 3], true],
@@ -959,7 +959,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesDictionaryTypeWithPropertiesConstraintDataProvider()
+    public static function validateHandlesDictionaryTypeWithPropertiesConstraintDataProvider(): array
     {
         return [
             [['foo' => 123, 'bar' => 'baz'], true],
@@ -987,7 +987,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesDictionaryTypeWithPatternPropertiesConstraintDataProvider()
+    public static function validateHandlesDictionaryTypeWithPatternPropertiesConstraintDataProvider(): array
     {
         return [
             [['ab1' => 'string'], true],
@@ -1016,7 +1016,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesDictionaryTypeWithFormatPropertiesConstraintDataProvider()
+    public static function validateHandlesDictionaryTypeWithFormatPropertiesConstraintDataProvider(): array
     {
         return [
             [['127.0.0.1' => 'string'], true],
@@ -1044,7 +1044,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesDictionaryTypeWithAdditionalPropertyFalseConstraintDataProvider()
+    public static function validateHandlesDictionaryTypeWithAdditionalPropertyFalseConstraintDataProvider(): array
     {
         return [
             [['empty' => null], true],
@@ -1074,7 +1074,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesDictionaryTypeWithAdditionalPropertySchemaConstraintDataProvider()
+    public static function validateHandlesDictionaryTypeWithAdditionalPropertySchemaConstraintDataProvider(): array
     {
         return [
             [['foo' => 123, 'bar' => 'baz'], true],
@@ -1121,7 +1121,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesNullTypeDataProvider()
+    public static function validateHandlesNullTypeDataProvider(): array
     {
         return [
             [null, true],
@@ -1144,7 +1144,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateHandlesUnknownTypeDataProvider()
+    public static function validateHandlesUnknownTypeDataProvider(): array
     {
         return [
             [null, false],
@@ -1170,7 +1170,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateAnyTypeResultHasNoErrorsInAnyCaseDataProvider()
+    public static function validateAnyTypeResultHasNoErrorsInAnyCaseDataProvider(): array
     {
         return [
             [23, true],
@@ -1199,7 +1199,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateCustomTypeResultDataProvider()
+    public static function validateCustomTypeResultDataProvider(): array
     {
         return [
             [ ['property' => ['integer_property' => 1, 'string_property' => 'string' ] ], true ],
@@ -1236,7 +1236,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateCustomTypeWithSuperTypesDataProvider()
+    public static function validateCustomTypeWithSuperTypesDataProvider(): array
     {
         return [
             [ ['property' => ['supertype_property' => 1, 'type_property' => 'string' ] ], true ],
@@ -1279,7 +1279,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public static function validateCustomTypeArrayDataProvider()
+    public static function validateCustomTypeArrayDataProvider(): array
     {
         return [
             [ ['property' => ['custom_type_a_property' => 1]], true ],
