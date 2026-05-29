@@ -13,13 +13,15 @@ namespace Neos\Flow\Tests\Unit\Utility;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Utility\SchemaGenerator;
 
 /**
  * Testcase for the Schema Generator
  */
-final class SchemaGeneratorTest extends \PHPUnit\Framework\TestCase
+final class SchemaGeneratorTest extends TestCase
 {
     /**
      * @var SchemaGenerator
@@ -44,10 +46,8 @@ final class SchemaGeneratorTest extends \PHPUnit\Framework\TestCase
         yield [null, ['type' => 'null']];
     }
 
-    /**
-     * @dataProvider schemaGenerationForSimpleTypesDataProvider
-     * @test
-     */
+    #[DataProvider('schemaGenerationForSimpleTypesDataProvider')]
+    #[Test]
     public function testSchemaGenerationForSimpleTypes($value, array $expectedSchema)
     {
         $schema = $this->configurationGenerator->generate($value);
@@ -64,10 +64,8 @@ final class SchemaGeneratorTest extends \PHPUnit\Framework\TestCase
         yield [['string', 'foo', 123],  ['type' => 'array', 'items' => [['type' => 'string'], ['type' => 'integer']]]];
     }
 
-    /**
-     * @dataProvider schemaGenerationForArrayOfTypesDataProvider
-     * @test
-     */
+    #[DataProvider('schemaGenerationForArrayOfTypesDataProvider')]
+    #[Test]
     public function testSchemaGenerationForArrayOfTypes(array $value, array $expectedSchema)
     {
         $schema = $this->configurationGenerator->generate($value);
