@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Utility;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Unit\Utility;
  * source code.
  */
 
-use Neos\Utility\SchemaValidator;
 use Neos\Error\Messages as Error;
+use Neos\Utility\SchemaValidator;
 
 /**
  * Testcase for the configuration validator
